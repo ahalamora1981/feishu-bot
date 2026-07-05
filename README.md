@@ -8,18 +8,30 @@ DashScope）→ 把回复发回飞书。**无 agent 框架、无工具调用、�
 
 ```
 feishu-bot/
-├── main.py        # WS 入口 + 事件分发
-├── feishu.py      # 消息解析（text、@ 提及）+ reply 封装
-├── agent.py       # httpx 调 OpenAI 兼容 /chat/completions
-├── session.py     # 内存版多轮会话（按 user 隔离）
-├── config.py      # stdlib 解析 .env
+├── main.py            # WS 入口 + 事件分发
+├── feishu.py          # 消息解析（text、@ 提及）+ reply 封装
+├── agent.py           # httpx 调 OpenAI 兼容 /chat/completions
+├── session.py         # 内存版多轮会话（按 user 隔离）
+├── config.py          # stdlib 解析 .env
+├── send_card_to_user.py  # 发送卡片消息
+├── JohnnyTao.card     # 卡片模板
 ├── pyproject.toml
-└── .env
+├── .env.example       # 环境变量模板
+└── .gitignore
 ```
 
 ## 跑通步骤
 
-### 1. 启动 bot
+### 1. 配置环境变量
+
+```bash
+# 复制环境变量模板
+ cp .env.example .env
+
+# 编辑 .env 填入你的配置
+```
+
+### 2. 启动 bot
 
 ```bash
 # 用项目自带的 venv
@@ -29,7 +41,7 @@ feishu-bot/
 看到 `starting feishu ws client, model=qwen3.5-flash` 就说明 WS 已经连上
 飞书了。
 
-### 2. 在飞书开放平台配置
+### 3. 在飞书开放平台配置
 
 打开 [飞书开放平台](https://open.feishu.cn/) → 你的应用 → 左侧菜单：
 
@@ -46,7 +58,7 @@ feishu-bot/
 4. 保存后**创建版本并发布**（自定义机器人也要发布才能用）。
 5. 在飞书里搜你 bot 的名字，开个私聊发条消息试试。
 
-### 3. 行为约定
+### 4. 行为约定
 
 - **私聊**：用户发的所有 text 消息都会回复。
 - **群聊**：只回复 @bot 的 text 消息；@ 前缀会被剥掉再喂给 LLM。
